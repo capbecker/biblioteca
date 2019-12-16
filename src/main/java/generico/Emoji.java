@@ -1,5 +1,6 @@
 package generico;
 
+/** Lista de Emojis */
 public enum Emoji {
     // Faces
     GRINNING_FACE               ('\uD83D','\uDE00'),

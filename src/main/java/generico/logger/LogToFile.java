@@ -5,6 +5,7 @@ import generico.Geral;
 import java.io.IOException;
 import java.util.logging.*;
 
+/** Loger */
 public class LogToFile {
     public static final Level TIPO_SEVERE = Level.SEVERE ;
     public static final Level TIPO_WARNING = Level.WARNING ;

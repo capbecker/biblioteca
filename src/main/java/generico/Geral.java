@@ -21,7 +21,7 @@ public class Geral {
         if (keys.size()!=valores.size()) {
             throw new ArrayIndexOutOfBoundsException("Quantidade de valores errados");
         }
-        Map<T,Q> retorno = new HashMap<>();
+        Map<T,Q> retorno = new HashMap();
         for (int i = 0; i<keys.size(); i++) {
             retorno.put(keys.get(i),valores.get(i));
         }
@@ -82,11 +82,27 @@ public class Geral {
     } //getClasses
 
     /** Retorna a string com a primeira letra maiuscula */
+    public static String decapitalize(String origem) {
+        if (origem == null || origem.length() == 0) {
+            return origem;
+        }
+        return origem.substring(0,1).toLowerCase()+ origem.substring(1);
+    }
+
+    /** Retorna a string com a primeira letra maiuscula */
     public static String capitalize(String origem) {
         if (origem == null || origem.length() == 0) {
             return origem;
         }
-        String[] control = origem.toLowerCase().trim().split(" ");
+        return origem.substring(0,1).toUpperCase()+ origem.substring(1);
+    }
+
+    /** Retorna a string com a primeira letra de cada palavra maiuscula */
+    public static String capitalizeAll(String origem) {
+        if (origem == null || origem.length() == 0) {
+            return origem;
+        }
+        String[] control = origem.trim().split(" ");
         StringJoiner retorno = new StringJoiner(" ");
         for (String part: control) {
             retorno.add(part.substring(0,1).toUpperCase()+ part.substring(1));
