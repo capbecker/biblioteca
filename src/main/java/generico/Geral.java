@@ -16,6 +16,25 @@ public class Geral {
         return null;
     } //coalesce
 
+    /** Retorna o primeiro não "vazio", sendo considerado diferente de nulo e:
+     *  ► Para String, diferente de "";
+     *  ► Para Class<?>, diferente de Object;
+     *  ► Para List e Map, deve ter ao menos um valor.
+     **/
+    public static <T> T coalesce2(T ...campos) {
+        for (T campo: campos) {
+            if (campo!=null
+                    && !(campo instanceof String && ((String) campo).length()==0)
+                    && !(campo instanceof Class<?> && (campo).equals(Object.class))
+                    && !(campo instanceof List<?> && ((List)campo).size() == 0)
+                    && !(campo instanceof Map && ((Map)campo).size() == 0)
+            ) {
+                return campo;
+            }
+        }
+        return null;
+    } //coalesce2
+
     /** Cria um map através de 2 lists */
     public static <T,Q> Map<T,Q> createMap (List<T> keys, List<Q> valores) {
         if (keys.size()!=valores.size()) {
