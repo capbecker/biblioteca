@@ -2,7 +2,7 @@ package generico;
 
 /** Lista de Emojis */
 public enum Emoji {
-    // Faces
+    // Faces - teste commit
     GRINNING_FACE               ('\uD83D','\uDE00'),
     INOCENT_FACE                ('\uD83D','\uDE07'),
     SMILING_IMP_FACE            ('\uD83D','\uDE08'),
