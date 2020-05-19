@@ -3,7 +3,7 @@ package generico;
 /** Lista de Emojis */
 public enum Emoji {
     // Faces
-    GRINNING_FACE               ('\uD8  3D','\uDE00'),
+    GRINNING_FACE               ('\uD83D','\uDE00'),
     INOCENT_FACE                ('\uD83D','\uDE07'),
     SMILING_IMP_FACE            ('\uD83D','\uDE08'),
     SUNGLASSES_FACE             ('\uD83D','\uDE0E'),
