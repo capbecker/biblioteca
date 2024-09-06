@@ -57,6 +57,9 @@ public class Geral {
         return false;
     } //in
 
+    /**
+     * Converte a lista de objetos genericos {ORIGEM}  para uma lista de objetos do tipo {CLAZZ}
+     */
     public static <T> List<T> convertList(List<Object> origem, Class<T> clazz) {
         List<T> retorno = new ArrayList<>();
         Class<?> clazzOrigem = origem.get(0).getClass();
