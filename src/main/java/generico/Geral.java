@@ -2,11 +2,23 @@ package generico;
 
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.function.Function;
 
 /** Classe de apoio */
 public class Geral {
 
-    /** Retorna o primeiro não nulo */
+    private static final Map<Class<?>, Function<Object, ?>> CONVERSORES ;
+
+    static {
+        CONVERSORES = new HashMap<>();
+        CONVERSORES.put(String.class, obj -> obj.toString());
+        CONVERSORES.put(Double.class, obj -> Double.valueOf(obj.toString()));
+        CONVERSORES.put(Integer.class, obj -> Integer.valueOf(obj.toString()));
+    }
+
+    /** Retorna o primeiro não nulo
+     * Vetores e listas são tratados como objetos individuais
+     * se for passado apenas um vetor, cada elemento é tratado individualmente*/
     public static <T> T coalesce(T ...campos) {
         for (T campo: campos) {
             if (campo!=null) {
@@ -28,6 +40,7 @@ public class Geral {
                     && !(campo instanceof Class<?> && (campo).equals(Object.class))
                     && !(campo instanceof List<?> && ((List)campo).size() == 0)
                     && !(campo instanceof Map && ((Map)campo).size() == 0)
+                    && !(campo.getClass().isArray() && java.lang.reflect.Array.getLength(campo) == 0)
             ) {
                 return campo;
             }
@@ -47,6 +60,15 @@ public class Geral {
         return retorno;
     }
 
+    public static <T,Q> Map<T,Q> createMap (T[] keys, Q[] valores) {
+        return Geral.createMap(Arrays.asList(keys), Arrays.asList(valores));
+    }
+
+    public static <T,Q> Map<T,Q> createMap (Set<T> keys, Collection<Q> valores) {
+        return Geral.createMap(new ArrayList<>(keys), new ArrayList<>(valores));
+    }
+
+
     /** True se o primeiro {PARAMETRO} esta presente em {CAMPOS}, false se não */
     public static <T> Boolean in(T parametro, T ...campos) {
         for (T campo: campos) {
@@ -62,20 +84,8 @@ public class Geral {
      */
     public static <T> List<T> convertList(List<Object> origem, Class<T> clazz) {
         List<T> retorno = new ArrayList<>();
-        Class<?> clazzOrigem = origem.get(0).getClass();
-        origem.forEach(elem->
-        {
-            if (clazz.isInstance(new String())) {
-                retorno.add((T) String.valueOf(elem));
-                } else if (clazzOrigem.isInstance(new String())) {
-                    if (clazz.isInstance(new Double(0.0))) {
-                        retorno.add((T) Double.valueOf((String) elem));
-                    } else if (clazz.isInstance(new Double(0.0))) {
-                        retorno.add((T) Integer.valueOf((String) elem));
-                    }
-            }
-        });
-
+        Function<Object, ?> conversor = CONVERSORES.get(clazz);
+        origem.forEach(elem->{ retorno.add(clazz.cast(conversor.apply(elem)));});
         return retorno;
     } //convertList
 
@@ -103,7 +113,7 @@ public class Geral {
         return listaClasses.toArray(new Class[0]);
     } //getClasses
 
-    /** Retorna a string com a primeira letra maiuscula */
+    /** Retorna a string com a primeira letra minuscula */
     public static String decapitalize(String origem) {
         if (origem == null || origem.length() == 0) {
             return origem;
@@ -128,6 +138,19 @@ public class Geral {
         StringJoiner retorno = new StringJoiner(" ");
         for (String part: control) {
             retorno.add(part.substring(0,1).toUpperCase()+ part.substring(1));
+        }
+        return retorno.toString();
+    }
+
+    /** Retorna a string com a primeira letra de cada palavra minuscula */
+    public static String deCapitalizeAll(String origem) {
+        if (origem == null || origem.length() == 0) {
+            return origem;
+        }
+        String[] control = origem.trim().split(" ");
+        StringJoiner retorno = new StringJoiner(" ");
+        for (String part: control) {
+            retorno.add(part.substring(0,1).toLowerCase()+ part.substring(1));
         }
         return retorno.toString();
     }
